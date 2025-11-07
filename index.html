@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lær klokka på tysk</title>
     <style>
-        /* Grunnleggende-stil (samme som før) */
+        /* Grunnleggende-stil */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* Starter på toppen */
+            justify-content: flex-start;
             min-height: 100vh;
             background-color: #f4f7f6;
             color: #333;
@@ -19,10 +19,33 @@
             padding: 10px;
             box-sizing: border-box;
         }
-        h1 { color: #005a9e; }
+        h1 { color: #005a9e; margin-bottom: 10px; }
         h2 { color: #333; height: 30px; margin: 10px 0; }
+        h3 { font-weight: 500; }
         
-        /* === NY STIL: Modus-velger === */
+        /* === NY STIL: Form/Uformell velger === */
+        .time-style-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .style-button {
+            background-color: #f0f0f0;
+            color: #555;
+            font-weight: 500;
+            flex-grow: 1;
+            border: 2px solid #ccc;
+        }
+        .style-button.active {
+            background-color: #28a745;
+            color: white;
+            border-color: #218838;
+        }
+
+        /* Modus-velger */
         .mode-switcher {
             display: flex;
             justify-content: center;
@@ -33,31 +56,32 @@
             width: 100%;
             max-width: 600px;
         }
-        .mode-button {
-            background-color: #e0e0e0;
-            color: #333;
-            font-weight: bold;
-            flex-grow: 1;
-        }
-        .mode-button.active {
-            background-color: #007bff;
-            color: white;
-        }
+        .mode-button { background-color: #e0e0e0; color: #333; font-weight: bold; flex-grow: 1; }
+        .mode-button.active { background-color: #007bff; color: white; }
         
-        /* Skjuler innhold som ikke er aktivt */
-        .mode-content {
-            display: none; /* Skjult som standard */
-            width: 100%;
-            flex-direction: column;
+        .mode-content { display: none; width: 100%; flex-direction: column; align-items: center; }
+        .mode-content.active { display: flex; }
+
+        /* Digital Klokke */
+        .digital-clock {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+            background-color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 4px solid #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            width: 150px;
+            height: 50px;
+            display: flex;
             align-items: center;
+            justify-content: center;
         }
-        .mode-content.active {
-            display: flex; /* Vises når aktiv */
-        }
-        /* === SLUTT PÅ NY STIL === */
 
-
-        /* Klokke-stil (samme som før) */
+        /* Analog Klokke */
         .clock {
             width: 300px;
             height: 300px;
@@ -65,7 +89,7 @@
             border-radius: 50%;
             position: relative;
             background-color: #fff;
-            margin: 15px;
+            margin: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .center-dot { z-index: 10; width: 12px; height: 12px; background-color: #333; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
@@ -73,25 +97,17 @@
         .hour-hand { width: 8px; height: 80px; background-color: #333; margin-left: -4px; z-index: 5; }
         .minute-hand { width: 4px; height: 120px; background-color: #555; margin-left: -2px; z-index: 6; }
         
-        /* === NY STIL: Gjør viserne "klikkbare" === */
-        /* Usynlig større område for å gjøre det enklere å "treffe" viserne */
-        .hour-hand::after, .minute-hand::after {
-            content: '';
-            position: absolute;
-            top: -10px; left: -10px;
-            right: -10px; bottom: 0;
-        }
+        .hour-hand::after, .minute-hand::after { content: ''; position: absolute; top: -10px; left: -10px; right: -10px; bottom: 0; }
         .clock.draggable { cursor: grab; }
         .clock.dragging { cursor: grabbing; }
-        /* === SLUTT PÅ NY STIL === */
 
-        /* Tall-stil (samme som før) */
+        /* Tall-stil */
         .clock-number { position: absolute; width: 40px; height: 40px; top: 50%; left: 50%; margin-left: -20px; margin-top: -20px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 500; color: #333; z-index: 1; }
         .num1 { transform: rotate(30deg) translate(0, -125px) rotate(-30deg); } .num2 { transform: rotate(60deg) translate(0, -125px) rotate(-60deg); } .num3 { transform: rotate(90deg) translate(0, -125px) rotate(-90deg); } .num4 { transform: rotate(120deg) translate(0, -125px) rotate(-120deg); } .num5 { transform: rotate(150deg) translate(0, -125px) rotate(-150deg); } .num6 { transform: rotate(180deg) translate(0, -125px) rotate(-180deg); } .num7 { transform: rotate(210deg) translate(0, -125px) rotate(-210deg); } .num8 { transform: rotate(240deg) translate(0, -125px) rotate(-240deg); } .num9 { transform: rotate(270deg) translate(0, -125px) rotate(-270deg); } .num10 { transform: rotate(300deg) translate(0, -125px) rotate(-300deg); } .num11 { transform: rotate(330deg) translate(0, -125px) rotate(-330deg); } .num12 { transform: rotate(0deg) translate(0, -125px) rotate(0deg); }
 
-        /* Knapp-stil (samme som før, men med margin-bottom på option-button) */
+        /* Knapp-stil */
         .level-buttons, .options-container {
-            margin: 10px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; /* Gap fungerer her pga flex */
+            margin: 10px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
         }
         button { padding: 12px 18px; font-size: 16px; border: none; border-radius: 8px; cursor: pointer; background-color: #007bff; color: white; transition: background-color 0.2s; min-width: 150px; }
         button:hover { background-color: #0056b3; }
@@ -99,22 +115,36 @@
         button.option-button:disabled { background-color: #aaa; cursor: not-allowed; opacity: 0.7; }
         .option-button {
             background-color: #28a745; width: 90%; max-width: 320px;
-            margin-bottom: 10px; /* Garanterer luft */
-            margin-right: 10px;
+            margin-bottom: 10px;
         }
         .option-button:hover:not(:disabled) { background-color: #218838; }
 
-        /* === NY STIL: Knapper for Modus 2 === */
-        #check-answer-button {
-            background-color: #28a745;
-            font-weight: bold;
-            padding: 15px 30px;
-            font-size: 18px;
-            margin-top: 10px;
+        /* Knapper for Modus 2 & 3 */
+        .action-button {
+            background-color: #28a745; font-weight: bold; padding: 15px 30px; font-size: 18px; margin-top: 10px;
         }
-        #check-answer-button:hover { background-color: #218838; }
+        .action-button:hover { background-color: #218838; }
+        .secondary-action { background-color: #17a2b8; } /* Blå knapp for "Ny tid" */
+        .secondary-action:hover { background-color: #138496; }
 
-        /* Tilbakemelding-stil (samme som før) */
+        /* Svar-visning for Modus 3 */
+        #speak-answer-display {
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            width: 90%;
+            max-width: 400px;
+            text-align: left;
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+        #speak-answer-display:empty {
+            display: none; /* Skjul boksen når den er tom */
+        }
+
+        /* Felles tilbakemelding */
         #feedback { margin-top: 15px; font-size: 1.2em; font-weight: bold; height: 50px; }
         .correct { color: #28a745; }
         .incorrect { color: #dc3545; }
@@ -123,22 +153,26 @@
 </head>
 <body>
 
-    <h1>Wie spät ist es?</h1>
+    <h1>Hva er klokka?</h1>
+
+    <div class="time-style-switcher">
+        <button class="style-button active" id="btn-style-formal">Formell tid</button>
+        <button class="style-button" id="btn-style-informal">Uformell tid</button>
+    </div>
 
     <div class="mode-switcher">
-        <button class="mode-button active" id="btn-mode-read">Les klokka</button>
-        <button class="mode-button" id="btn-mode-set">Still klokka</button>
+        <button class="mode-button active" id="btn-mode-read">Modus 1: Les klokka</button>
+        <button class="mode-button" id="btn-mode-set">Modus 2: Still klokka</button>
+        <button class="mode-button" id="btn-mode-speak">Modus 3: Si klokka</button>
     </div>
 
     <div id="mode-read" class="mode-content active">
+        <div class="digital-clock" id="digital-clock-read">00:00</div>
         <div class="clock" id="clock-read">
             <div class="hand hour-hand" id="hour-hand-read"></div>
             <div class="hand minute-hand" id="minute-hand-read"></div>
             <div class="center-dot"></div>
-            <div class="clock-number num1">1</div> <div class="clock-number num2">2</div> <div class="clock-number num3">3</div>
-            <div class="clock-number num4">4</div> <div class="clock-number num5">5</div> <div class="clock-number num6">6</div>
-            <div class="clock-number num7">7</div> <div class="clock-number num8">8</div> <div class="clock-number num9">9</div>
-            <div class="clock-number num10">10</div> <div class="clock-number num11">11</div> <div class="clock-number num12">12</div>
+            <div class="clock-number num1">1</div> <div class="clock-number num2">2</div> <div class="clock-number num3">3</div> <div class="clock-number num4">4</div> <div class="clock-number num5">5</div> <div class="clock-number num6">6</div> <div class="clock-number num7">7</div> <div class="clock-number num8">8</div> <div class="clock-number num9">9</div> <div class="clock-number num10">10</div> <div class="clock-number num11">11</div> <div class="clock-number num12">12</div>
         </div>
         <h2 id="current-level-display-read">Velg et nivå for å starte</h2>
         <div class="level-buttons" id="level-buttons-read">
@@ -151,27 +185,46 @@
     </div>
 
     <div id="mode-set" class="mode-content">
+        <div class="digital-clock" id="digital-clock-set">12:00</div>
         <div class="clock draggable" id="clock-set">
             <div class="hand hour-hand" id="hour-hand-set"></div>
             <div class="hand minute-hand" id="minute-hand-set"></div>
             <div class="center-dot"></div>
-            <div class="clock-number num1">1</div> <div class="clock-number num2">2</div> <div class="clock-number num3">3</div>
-            <div class="clock-number num4">4</div> <div class="clock-number num5">5</div> <div class="clock-number num6">6</div>
-            <div class="clock-number num7">7</div> <div class="clock-number num8">8</div> <div class="clock-number num9">9</div>
-            <div class="clock-number num10">10</div> <div class="clock-number num11">11</div> <div class="clock-number num12">12</div>
+            <div class="clock-number num1">1</div> <div class="clock-number num2">2</div> <div class="clock-number num3">3</div> <div class="clock-number num4">4</div> <div class="clock-number num5">5</div> <div class="clock-number num6">6</div> <div class="clock-number num7">7</div> <div class="clock-number num8">8</div> <div class="clock-number num9">9</div> <div class="clock-number num10">10</div> <div class="clock-number num11">11</div> <div class="clock-number num12">12</div>
         </div>
         <h2 id="current-level-display-set">Velg et nivå for å starte</h2>
         <h3 id="target-time-text"></h3> 
-        
         <div class="level-buttons" id="level-buttons-set">
             <button class="level-button" data-level="1">Nivå 1</button>
             <button class="level-button" data-level="2">Nivå 2</button>
             <button class="level-button" data-level="3">Nivå 3</button>
             <button class="level-button" data-level="4">Nivå 4</button>
         </div>
-        <button id="check-answer-button" style="display: none;">Sjekk svar</button>
+        <button id="check-answer-button" class="action-button" style="display: none;">Sjekk svar</button>
     </div>
 
+    <div id="mode-speak" class="mode-content">
+        <div class="digital-clock" id="digital-clock-speak">00:00</div>
+        <div class="clock" id="clock-speak">
+            <div class="hand hour-hand" id="hour-hand-speak"></div>
+            <div class="hand minute-hand" id="minute-hand-speak"></div>
+            <div class="center-dot"></div>
+            <div class="clock-number num1">1</div> <div class="clock-number num2">2</div> <div class="clock-number num3">3</div> <div class="clock-number num4">4</div> <div class="clock-number num5">5</div> <div class="clock-number num6">6</div> <div class="clock-number num7">7</div> <div class="clock-number num8">8</div> <div class="clock-number num9">9</div> <div class="clock-number num10">10</div> <div class="clock-number num11">11</div> <div class="clock-number num12">12</div>
+        </div>
+        <h2 id="current-level-display-speak">Velg et nivå for å starte</h2>
+        <div class="level-buttons" id="level-buttons-speak">
+            <button class="level-button" data-level="1">Nivå 1</button>
+            <button class="level-button" data-level="2">Nivå 2</button>
+            <button class="level-button" data-level="3">Nivå 3</button>
+            <button class="level-button" data-level="4">Nivå 4</button>
+        </div>
+        <div id="speak-controls" style="display: none;">
+            <button id="check-answer-speak" class="action-button">Sjekk svar</button>
+            <button id="new-time-button" class="action-button secondary-action">Ny tid</button>
+        </div>
+        <div id="speak-answer-display"></div>
+    </div>
+    
     <div id="feedback"></div>
 
 
@@ -179,68 +232,118 @@
         // === DEL 1: GLOBALE VARIABLER OG ORDBOK ===
         
         let currentLevel = 0;
+        let currentTimeStyle = 'formal'; // 'formal' eller 'informal'
         let currentCorrectAnswerText = "";
-        let targetTime = { hour: 0, minute: 0 }; // For Modus 2
+        let targetTime = { hour: 0, minute: 0 };
+        let currentSpeakTime = {}; // Holder det nåværende klokkeslettet for Modus 3
 
-        const hoursText = ["", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf"];
-        const levelNames = ["", "Nivå 1: Hele timer", "Nivå 2: Halvtimer", "Nivå 3: Kvart på / Kvart over", "Nivå 4: 5 & 10 minutter"];
+        // Omfattende ordbok for begge tidsstiler
+        const germanNumbers = {
+            formalHours: ["null", "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn", "zwanzig", "einundzwanzig", "zweiundzwanzig", "dreiundzwanzig"],
+            informalHours: ["", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf"],
+            minutes: {
+                0: "", 1: "eins", 2: "zwei", 3: "drei", 4: "vier", 5: "fünf", 6: "sechs", 7: "sieben", 8: "acht", 9: "neun",
+                10: "zehn", 11: "elf", 12: "zwölf", 13: "dreizehn", 14: "vierzehn", 15: "fünfzehn", 16: "sechzehn", 17: "siebzehn", 18: "achtzehn", 19: "neunzehn",
+                20: "zwanzig", 30: "dreißig", 40: "vierzig", 50: "fünfzig"
+            },
+            units: ["", "einund", "zweiund", "dreiund", "vierund", "fünfund", "sechsund", "siebenund", "achtund", "neunund"]
+        };
 
-        // Hent elementer
+        const levelNames = ["", "Nivå 1: Hele timer", "Nivå 2: Halvtimer", "Nivå 3: Kvart", "Nivå 4: 5/10 minutter"];
+
+        // Felles elementer
         const feedbackEl = document.getElementById('feedback');
         
-        // Modus-elementer
+        // Stil- og Modus-velgere
+        const btnStyleFormal = document.getElementById('btn-style-formal');
+        const btnStyleInformal = document.getElementById('btn-style-informal');
         const btnModeRead = document.getElementById('btn-mode-read');
         const btnModeSet = document.getElementById('btn-mode-set');
+        const btnModeSpeak = document.getElementById('btn-mode-speak');
         const modeReadContent = document.getElementById('mode-read');
         const modeSetContent = document.getElementById('mode-set');
+        const modeSpeakContent = document.getElementById('mode-speak');
 
-        // Modus 1 (Les) elementer
-        const clockRead = {
-            hourHand: document.getElementById('hour-hand-read'),
-            minuteHand: document.getElementById('minute-hand-read')
-        };
+        // Modus 1 (Les)
+        const digitalClockRead = document.getElementById('digital-clock-read');
+        const clockRead = { hourHand: document.getElementById('hour-hand-read'), minuteHand: document.getElementById('minute-hand-read') };
         const levelDisplayRead = document.getElementById('current-level-display-read');
         const optionsContainer = document.getElementById('options-container');
 
-        // Modus 2 (Still) elementer
+        // Modus 2 (Still)
+        const digitalClockSet = document.getElementById('digital-clock-set');
         const clockSet = document.getElementById('clock-set');
-        const clockSetHands = {
-            hourHand: document.getElementById('hour-hand-set'),
-            minuteHand: document.getElementById('minute-hand-set')
-        };
+        const clockSetHands = { hourHand: document.getElementById('hour-hand-set'), minuteHand: document.getElementById('minute-hand-set') };
         const levelDisplaySet = document.getElementById('current-level-display-set');
         const targetTimeTextEl = document.getElementById('target-time-text');
         const checkAnswerButton = document.getElementById('check-answer-button');
 
-        
-        // === DEL 2: MODUS-BYTTE-LOGIKK ===
+        // Modus 3 (Si)
+        const digitalClockSpeak = document.getElementById('digital-clock-speak');
+        const clockSpeak = { hourHand: document.getElementById('hour-hand-speak'), minuteHand: document.getElementById('minute-hand-speak') };
+        const levelDisplaySpeak = document.getElementById('current-level-display-speak');
+        const speakControls = document.getElementById('speak-controls');
+        const checkAnswerSpeakButton = document.getElementById('check-answer-speak');
+        const newTimeButton = document.getElementById('new-time-button');
+        const speakAnswerDisplay = document.getElementById('speak-answer-display');
 
+        
+        // === DEL 2: STIL- OG MODUS-BYTTE ===
+
+        btnStyleFormal.addEventListener('click', () => setTimeStyle('formal'));
+        btnStyleInformal.addEventListener('click', () => setTimeStyle('informal'));
         btnModeRead.addEventListener('click', () => setMode('read'));
         btnModeSet.addEventListener('click', () => setMode('set'));
+        btnModeSpeak.addEventListener('click', () => setMode('speak'));
+
+        function setTimeStyle(style) {
+            currentTimeStyle = style;
+            btnStyleFormal.classList.toggle('active', style === 'formal');
+            btnStyleInformal.classList.toggle('active', style === 'informal');
+            
+            // Nullstill alle moduser og nivåer, siden premissen har endret seg
+            currentLevel = 0;
+            resetAllModes();
+        }
 
         function setMode(mode) {
-            currentLevel = 0; // Nullstill nivå ved modus-bytte
+            currentLevel = 0; 
+            resetAllModes();
+            
+            // Aktiver riktig modus-innhold
+            modeReadContent.classList.toggle('active', mode === 'read');
+            modeSetContent.classList.toggle('active', mode === 'set');
+            modeSpeakContent.classList.toggle('active', mode === 'speak');
+            
+            // Aktiver riktig modus-knapp
+            btnModeRead.classList.toggle('active', mode === 'read');
+            btnModeSet.classList.toggle('active', mode === 'set');
+            btnModeSpeak.classList.toggle('active', mode === 'speak');
+        }
+        
+        function resetAllModes() {
             feedbackEl.textContent = "";
+            
+            // Nullstill Modus 1
+            levelDisplayRead.textContent = "Velg et nivå for å starte";
+            optionsContainer.innerHTML = "";
+            updateDigitalClock(0, 0, digitalClockRead);
+            updateAnalogClock(12, 0, clockRead);
+
+            // Nullstill Modus 2
+            levelDisplaySet.textContent = "Velg et nivå for å starte";
             targetTimeTextEl.textContent = "";
             checkAnswerButton.style.display = "none";
+            updateDigitalClock(12, 0, digitalClockSet);
+            updateAnalogClock(12, 0, clockSetHands);
             
-            if (mode === 'read') {
-                // Vis Modus 1, skjul Modus 2
-                modeReadContent.classList.add('active');
-                modeSetContent.classList.remove('active');
-                btnModeRead.classList.add('active');
-                btnModeSet.classList.remove('active');
-                levelDisplayRead.textContent = "Velg et nivå for å starte";
-                optionsContainer.innerHTML = "";
-            } else {
-                // Vis Modus 2, skjul Modus 1
-                modeReadContent.classList.remove('active');
-                modeSetContent.classList.add('active');
-                btnModeRead.classList.remove('active');
-                btnModeSet.classList.add('active');
-                levelDisplaySet.textContent = "Velg et nivå for å starte";
-                updateClock(12, 0, clockSetHands); // Still klokka til 12:00
-            }
+            // Nullstill Modus 3
+            levelDisplaySpeak.textContent = "Velg et nivå for å starte";
+            speakControls.style.display = "none";
+            speakAnswerDisplay.textContent = "";
+            updateDigitalClock(0, 0, digitalClockSpeak);
+            updateAnalogClock(12, 0, clockSpeak);
+
             // Nullstill alle nivåknapper
             document.querySelectorAll('.level-button').forEach(btn => btn.classList.remove('active'));
         }
@@ -258,9 +361,10 @@
 
         function startNextRoundRead() {
             let timeData = generateTimeForLevel(currentLevel);
-            currentCorrectAnswerText = timeData.correctText;
+            currentCorrectAnswerText = (currentTimeStyle === 'formal') ? timeData.formalText : timeData.informalText;
             
-            updateClock(timeData.hour, timeData.minute, clockRead);
+            updateAnalogClock(timeData.hour, timeData.minute, clockRead);
+            updateDigitalClock(timeData.hour, timeData.minute, digitalClockRead);
             
             const options = generateOptions(currentCorrectAnswerText, currentLevel);
             displayOptions(options);
@@ -304,7 +408,8 @@
         function generateOptions(correctAnswer, level) {
             let options = [correctAnswer];
             while (options.length < 4) {
-                const distractor = generateTimeForLevel(level).correctText;
+                const timeData = generateTimeForLevel(level);
+                const distractor = (currentTimeStyle === 'formal') ? timeData.formalText : timeData.informalText;
                 if (!options.includes(distractor)) {
                     options.push(distractor);
                 }
@@ -314,8 +419,8 @@
 
         // === DEL 4: LOGIKK FOR MODUS 2 (STILL KLOKKA) ===
 
-        let userSetTime = { hour: 12, minute: 0 }; // Holder styr på hva brukeren har stilt
-        let isDragging = false; // Flag for dra-logikk
+        let userSetTime = { hour: 12, minute: 0 };
+        let isDragging = false; 
 
         document.querySelectorAll('#level-buttons-set .level-button').forEach(button => {
             button.addEventListener('click', () => {
@@ -332,43 +437,40 @@
             const timeData = generateTimeForLevel(currentLevel);
             targetTime = { hour: timeData.hour, minute: timeData.minute };
             
-            targetTimeTextEl.textContent = `Still klokka til: "${timeData.correctText}"`;
+            const promptText = (currentTimeStyle === 'formal') ? timeData.formalText : timeData.informalText;
+            targetTimeTextEl.textContent = `Still klokka til: "${promptText}"`;
             checkAnswerButton.style.display = 'inline-block';
             
-            // Nullstill klokka for ny runde
             userSetTime = { hour: 12, minute: 0 };
-            updateClock(12, 0, clockSetHands);
+            updateAnalogClock(12, 0, clockSetHands);
+            updateDigitalClock(12, 0, digitalClockSet);
             
             feedbackEl.textContent = "";
             feedbackEl.className = "";
         }
         
         function checkAnswerSet() {
-            // Snapper tiden til nærmeste gyldige verdi FØR sjekk
             const snappedTime = snapTimeToLevel(userSetTime.minute, userSetTime.hour);
             userSetTime = { hour: snappedTime.hour, minute: snappedTime.minute };
-            updateClock(userSetTime.hour, userSetTime.minute, clockSetHands);
+            updateAnalogClock(userSetTime.hour, userSetTime.minute, clockSetHands);
+            updateDigitalClock(userSetTime.hour, userSetTime.minute, digitalClockSet);
             
-            // Tysk "halb" logikk: "halb drei" (2:30) har targetTime.hour = 2.
-            // Tysk "vor" logikk: "Viertel vor drei" (2:45) har targetTime.hour = 2.
-            // Dette stemmer overens med `generateTimeForLevel`
+            let targetHour12 = targetTime.hour % 12;
+            if (targetTime.hour === 0 || targetTime.hour === 12) {
+                targetHour12 = 12; 
+            }
             
-            if (userSetTime.hour === targetTime.hour && userSetTime.minute === targetTime.minute) {
+            if (userSetTime.hour === targetHour12 && userSetTime.minute === targetTime.minute) {
                 feedbackEl.textContent = "Riktig! Bra jobba!";
                 feedbackEl.className = 'correct';
                 setTimeout(startNextRoundSet, 1500);
             } else {
-                // Vis det riktige svaret
-                const correctHourText = (targetTime.hour === 1) ? 'ein' : hoursText[targetTime.hour];
-                const correctMinuteText = targetTime.minute === 0 ? "00" : targetTime.minute;
-                
-                feedbackEl.textContent = `Nesten! Riktig svar var ${targetTime.hour}:${correctMinuteText}.`;
+                feedbackEl.textContent = `Nesten! Riktig svar var ${targetTime.hour}:${padZero(targetTime.minute)}.`;
                 feedbackEl.className = 'incorrect';
                 
-                // Viser riktig klokkeslett
-                updateClock(targetTime.hour, targetTime.minute, clockSetHands);
+                updateAnalogClock(targetTime.hour, targetTime.minute, clockSetHands);
+                updateDigitalClock(targetTime.hour, targetTime.minute, digitalClockSet);
                 
-                // Venter lenger før neste runde
                 setTimeout(startNextRoundSet, 3000);
             }
         }
@@ -376,177 +478,154 @@
         // --- Dra-og-slipp logikk ---
         clockSet.addEventListener('mousedown', startDrag);
         clockSet.addEventListener('touchstart', startDrag, { passive: false });
-        
         document.addEventListener('mousemove', drag);
         document.addEventListener('touchmove', drag, { passive: false });
-        
         document.addEventListener('mouseup', endDrag);
         document.addEventListener('touchend', endDrag);
 
-        function startDrag(e) {
-            if (currentLevel === 0) return; // Ikke dra hvis ikke et nivå er valgt
-            e.preventDefault();
-            isDragging = true;
-            clockSet.classList.add('dragging');
-            updateHands(e); // Oppdater med en gang
-        }
-
-        function drag(e) {
-            if (!isDragging) return;
-            e.preventDefault();
-            updateHands(e);
-        }
-
-        function endDrag(e) {
-            if (!isDragging) return;
-            isDragging = false;
-            clockSet.classList.remove('dragging');
-            
-            // Snap til nærmeste nivå-verdi
-            const snappedTime = snapTimeToLevel(userSetTime.minute, userSetTime.hour);
-            userSetTime = { hour: snappedTime.hour, minute: snappedTime.minute };
-            updateClock(userSetTime.hour, userSetTime.minute, clockSetHands);
-        }
+        function startDrag(e) { /*...*/ } // Uendret
+        function drag(e) { /*...*/ } // Uendret
+        function endDrag(e) { /*...*/ } // Uendret
+        function updateHandsFromEvent(e) { /*...*/ } // Uendret
+        function snapTimeToLevel(minute, hour) { /*...*/ } // Uendret
         
-        function updateHands(e) {
-            const rect = clockSet.getBoundingClientRect();
-            // Finner sentrum av klokka
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
+        // (Disse er kopiert fra forrige versjon og er uendret)
+        function startDrag(e) { if (currentLevel === 0) return; e.preventDefault(); isDragging = true; clockSet.classList.add('dragging'); updateHandsFromEvent(e); }
+        function drag(e) { if (!isDragging) return; e.preventDefault(); updateHandsFromEvent(e); }
+        function endDrag(e) { if (!isDragging) return; isDragging = false; clockSet.classList.remove('dragging'); const snappedTime = snapTimeToLevel(userSetTime.minute, userSetTime.hour); userSetTime = { hour: snappedTime.hour, minute: snappedTime.minute }; updateAnalogClock(userSetTime.hour, userSetTime.minute, clockSetHands); updateDigitalClock(userSetTime.hour, userSetTime.minute, digitalClockSet); }
+        function updateHandsFromEvent(e) { const rect = clockSet.getBoundingClientRect(); const centerX = rect.left + rect.width / 2; const centerY = rect.top + rect.height / 2; const clientX = e.clientX || e.touches[0].clientX; const clientY = e.clientY || e.touches[0].clientY; const deltaX = clientX - centerX; const deltaY = clientY - centerY; let angleRad = Math.atan2(deltaY, deltaX); let angleDeg = angleRad * (180 / Math.PI) + 90; if (angleDeg < 0) angleDeg += 360; let minute = Math.round(angleDeg / 6); if (minute === 60) minute = 0; const oldMinute = userSetTime.minute; if (oldMinute > 50 && minute < 10) { userSetTime.hour = (userSetTime.hour % 12) + 1; } else if (oldMinute < 10 && minute > 50) { userSetTime.hour = (userSetTime.hour - 2 + 12) % 12 + 1; } userSetTime.minute = minute; updateAnalogClock(userSetTime.hour, userSetTime.minute, clockSetHands); updateDigitalClock(userSetTime.hour, userSetTime.minute, digitalClockSet); }
+        function snapTimeToLevel(minute, hour) { let snappedMinute = 0; let snappedHour = hour; switch (currentLevel) { case 1: snappedMinute = 0; if (minute > 30) snappedHour = (hour % 12) + 1; break; case 2: if (minute < 15 || minute > 45) { snappedMinute = 0; if (minute > 45) snappedHour = (hour % 12) + 1; } else { snappedMinute = 30; } break; case 3: if (minute < 8) { snappedMinute = 0; } else if (minute < 23) { snappedMinute = 15; } else if (minute < 38) { snappedMinute = 30; } else if (minute < 53) { snappedMinute = 45; } else { snappedMinute = 0; snappedHour = (hour % 12) + 1; } break; case 4: snappedMinute = Math.round(minute / 5) * 5; if (snappedMinute === 60) { snappedMinute = 0; snappedHour = (hour % 12) + 1; } break; } return { hour: snappedHour, minute: snappedMinute }; }
 
-            // Finner posisjonen til mus/finger
-            const clientX = e.clientX || e.touches[0].clientX;
-            const clientY = e.clientY || e.touches[0].clientY;
+        
+        // === DEL 5: LOGIKK FOR MODUS 3 (SI KLOKKA) ===
+        
+        document.querySelectorAll('#level-buttons-speak .level-button').forEach(button => {
+            button.addEventListener('click', () => {
+                currentLevel = parseInt(button.dataset.level);
+                levelDisplaySpeak.textContent = levelNames[currentLevel];
+                highlightActiveLevelButton(button, 'level-buttons-speak');
+                speakControls.style.display = 'block';
+                startNextRoundSpeak();
+            });
+        });
 
-            // Regner ut vinkelen
-            const deltaX = clientX - centerX;
-            const deltaY = clientY - centerY;
-            let angleRad = Math.atan2(deltaY, deltaX);
-            let angleDeg = angleRad * (180 / Math.PI) + 90; // +90 for å justere (0 deg = topp)
-            if (angleDeg < 0) angleDeg += 360; // Normaliser til 0-360
+        checkAnswerSpeakButton.addEventListener('click', () => {
+            // Vis svarene
+            speakAnswerDisplay.innerHTML = 
+                `<b>Formell:</b> ${currentSpeakTime.formalText}<br>` +
+                `<b>Uformell:</b> ${currentSpeakTime.informalText}`;
+        });
+        
+        newTimeButton.addEventListener('click', startNextRoundSpeak);
 
-            // Konverterer vinkel til tid
-            // 360 grader / 12 timer = 30 grader per time
-            // 360 grader / 60 min = 6 grader per minutt
+        function startNextRoundSpeak() {
+            currentSpeakTime = generateTimeForLevel(currentLevel);
             
-            // Konverterer vinkel til minutter (0-59)
-            let minute = Math.round(angleDeg / 6);
-            if (minute === 60) minute = 0;
+            updateAnalogClock(currentSpeakTime.hour, currentSpeakTime.minute, clockSpeak);
+            updateDigitalClock(currentSpeakTime.hour, currentSpeakTime.minute, digitalClockSpeak);
             
-            // Konverterer vinkel til time (0-11)
-            // Vi må ta hensyn til minuttene for å finne riktig time
-            let hour = Math.floor(angleDeg / 30); // 0-11
-            if (hour === 0) hour = 12; // 0 blir 12
-            
-            // Oppdaterer global bruker-tid
-            // Den store utfordringen: 12:30 vs 1:30.
-            // Vi beholder den "gamle" timen, men justerer den hvis minuttviseren krysser 12
-            const oldMinute = userSetTime.minute;
-            
-            if (oldMinute > 50 && minute < 10) { // Gikk med klokka over 12
-                userSetTime.hour = (userSetTime.hour % 12) + 1;
-            } else if (oldMinute < 10 && minute > 50) { // Gikk mot klokka over 12
-                userSetTime.hour = (userSetTime.hour - 2 + 12) % 12 + 1;
-            }
-            
-            userSetTime.minute = minute;
-            
-            // Oppdaterer viserne (denne funksjonen fikser "in-between" time-viser)
-            updateClock(userSetTime.hour, userSetTime.minute, clockSetHands);
-        }
-
-        function snapTimeToLevel(minute, hour) {
-            let snappedMinute = 0;
-            let snappedHour = hour;
-            
-            switch (currentLevel) {
-                case 1: // Hele timer
-                    snappedMinute = 0;
-                    // Rund timen til nærmeste hele
-                    if (minute > 30) snappedHour = (hour % 12) + 1;
-                    break;
-                case 2: // Halvtimer
-                    if (minute < 15 || minute > 45) {
-                        snappedMinute = 0;
-                        if (minute > 45) snappedHour = (hour % 12) + 1;
-                    } else {
-                        snappedMinute = 30;
-                    }
-                    break;
-                case 3: // Kvart
-                    if (minute < 8) { snappedMinute = 0; }
-                    else if (minute < 23) { snappedMinute = 15; }
-                    else if (minute < 38) { snappedMinute = 30; }
-                    else if (minute < 53) { snappedMinute = 45; }
-                    else { snappedMinute = 0; snappedHour = (hour % 12) + 1; }
-                    break;
-                case 4: // 5 minutter
-                    snappedMinute = Math.round(minute / 5) * 5;
-                    if (snappedMinute === 60) {
-                        snappedMinute = 0;
-                        snappedHour = (hour % 12) + 1;
-                    }
-                    break;
-            }
-            return { hour: snappedHour, minute: snappedMinute };
+            // Skjul forrige svar
+            speakAnswerDisplay.textContent = "";
         }
 
 
-        // === DEL 5: FELLES HJELPEFUNKSJONER ===
+        // === DEL 6: FELLES HJELPEFUNKSJONER ===
         
         /**
-         * Felles funksjon for å generere tid for ALLE nivåer.
+         * Genererer tilfeldig tid og BEGGE tyske oversettelsene.
          */
         function generateTimeForLevel(level) {
-            let hour = Math.floor(Math.random() * 12) + 1; // 1-12
+            let hour = Math.floor(Math.random() * 24); // 0-23
             let minute = 0;
-            let correctText = "";
-            
-            const currentHourText = hoursText[hour];
-            const nextHourText = hoursText[(hour % 12) + 1];
 
             switch (level) {
-                case 1:
-                    minute = 0;
-                    const hourString = (hour === 1) ? "ein" : currentHourText;
-                    correctText = `Es ist ${hourString} Uhr`;
-                    break;
-                case 2:
-                    minute = 30;
-                    correctText = `Es ist halb ${nextHourText}`;
-                    break;
-                case 3:
-                    if (Math.random() > 0.5) {
-                        minute = 15;
-                        correctText = `Es ist Viertel nach ${currentHourText}`;
-                    } else {
-                        minute = 45;
-                        correctText = `Es ist Viertel vor ${nextHourText}`;
-                    }
-                    break;
+                case 1: minute = 0; break;
+                case 2: minute = 30; break;
+                case 3: minute = (Math.random() > 0.5) ? 15 : 45; break;
                 case 4:
-                    const timeType = Math.floor(Math.random() * 8);
-                    switch (timeType) {
-                        case 0: minute = 5; correctText = `Es ist fünf nach ${currentHourText}`; break;
-                        case 1: minute = 10; correctText = `Es ist zehn nach ${currentHourText}`; break;
-                        case 2: minute = 20; correctText = `Es ist zehn vor halb ${nextHourText}`; break;
-                        case 3: minute = 25; correctText = `Es ist fünf vor halb ${nextHourText}`; break;
-                        case 4: minute = 35; correctText = `Es ist fünf nach halb ${nextHourText}`; break;
-                        case 5: minute = 40; correctText = `Es ist zehn nach halb ${nextHourText}`; break;
-                        case 6: minute = 50; correctText = `Es ist zehn vor ${nextHourText}`; break;
-                        case 7: minute = 55; correctText = `Es ist fünf vor ${nextHourText}`; break;
-                    }
+                    const intervals = [5, 10, 20, 25, 35, 40, 50, 55];
+                    minute = intervals[Math.floor(Math.random() * intervals.length)];
                     break;
             }
-            return { hour, minute, correctText };
+            
+            const formalText = getFormalGermanTime(hour, minute);
+            const informalText = getInformalGermanTime(hour, minute);
+            
+            return { hour, minute, formalText, informalText };
+        }
+
+        /**
+         * Oversetter tid til FORMELL tysk.
+         */
+        function getFormalGermanTime(hour, minute) {
+            const hourText = germanNumbers.formalHours[hour];
+            
+            if (hour === 1 && minute === 0) return "Es ist ein Uhr";
+            if (minute === 0) return `Es ist ${hourText} Uhr`;
+
+            let minuteText = "";
+            if (germanNumbers.minutes[minute]) {
+                minuteText = germanNumbers.minutes[minute];
+            } else {
+                const unit = minute % 10;
+                const ten = minute - unit;
+                minuteText = germanNumbers.units[unit] + germanNumbers.minutes[ten];
+            }
+            return `Es ist ${hourText} Uhr ${minuteText}`;
+        }
+
+        /**
+         * Oversetter tid til UFORMELL tysk.
+         */
+        function getInformalGermanTime(hour, minute) {
+            let hour12 = hour % 12;
+            if (hour12 === 0) hour12 = 12; // 0 og 12 er "12"
+            
+            const nextHour12 = (hour12 % 12) + 1;
+            
+            // Bruker 'ein' for 1 Uhr, men 'eins' for 'halb eins', 'nach eins'
+            const hourText = germanNumbers.informalHours[hour12];
+            const hourTextEin = (hour12 === 1) ? "ein" : hourText;
+            const nextHourTextEins = germanNumbers.informalHours[nextHour12];
+
+            switch (minute) {
+                case 0:  return `Es ist ${hourTextEin} Uhr`;
+                case 5:  return `Es ist fünf nach ${hourText}`;
+                case 10: return `Es ist zehn nach ${hourText}`;
+                case 15: return `Es ist Viertel nach ${hourText}`;
+                case 20: return `Es ist zehn vor halb ${nextHourTextEins}`;
+                case 25: return `Es ist fünf vor halb ${nextHourTextEins}`;
+                case 30: return `Es ist halb ${nextHourTextEins}`;
+                case 35: return `Es ist fünf nach halb ${nextHourTextEins}`;
+                case 40: return `Es ist zehn nach halb ${nextHourTextEins}`;
+                case 45: return `Es ist Viertel vor ${nextHourTextEins}`;
+                case 50: return `Es ist zehn vor ${nextHourTextEins}`;
+                case 55: return `Es ist fünf vor ${nextHourTextEins}`;
+                default:
+                    // Fallback for minutter som ikke er på nivå 4 (f.eks. 1, 2, 3...)
+                    // Returnerer bare formell tid hvis vi er utenfor nivåene
+                    return getFormalGermanTime(hour, minute); 
+            }
         }
         
         /**
-         * Oppdaterer klokkeviserne for en gitt klokke.
-         * @param {object} hands - Et objekt som { hourHand, minuteHand }
+         * Oppdaterer digital klokke-tekst.
          */
-        function updateClock(hour, minute, hands) {
-            const hourForCalc = hour % 12; 
+        function updateDigitalClock(hour, minute, clockElement) {
+            clockElement.textContent = `${padZero(hour)}:${padZero(minute)}`;
+        }
+
+        function padZero(num) {
+            return num < 10 ? '0' + num : num;
+        }
+
+        /**
+         * Oppdaterer analog klokke-visere (tar 24t, viser 12t).
+         */
+        function updateAnalogClock(hour, minute, hands) {
+            let hourForCalc = hour % 12;
+            if (hourForCalc === 0) { hourForCalc = 12; }
+            
             const hourDeg = (hourForCalc * 30) + (minute * 0.5); 
             const minuteDeg = minute * 6;
             
@@ -556,11 +635,7 @@
         
         function highlightActiveLevelButton(activeButton, buttonContainerId) {
             document.querySelectorAll(`#${buttonContainerId} .level-button`).forEach(btn => {
-                if (btn === activeButton) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+                btn.classList.toggle('active', btn === activeButton);
             });
         }
         
@@ -572,8 +647,9 @@
             return array;
         }
 
-        // Starter appen i Modus 1
-        setMode('read');
+        // Start appen
+        setTimeStyle('formal'); // Starter i Formell-modus
+        setMode('read'); // Starter i Modus 1
 
     </script>
 </body>
