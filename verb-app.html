@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tysk Verb-trener</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f4f7f6;
+            color: #333;
+            text-align: center;
+            padding: 10px;
+        }
+
+        h1 {
+            color: #005a9e;
+        }
+
+        .quiz-container {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 450px;
+        }
+
+        /* Oppgaven (f.eks. "du (machen)") */
+        #task-display {
+            font-size: 2.5em;
+            font-weight: 500;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        /* Tekstfelt for svar */
+        #answer-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box; /* Viktig for padding */
+            margin-top: 10px;
+        }
+        #answer-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        /* Knapper */
+        .button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.2s;
+        }
+
+        #check-button {
+            background-color: #28a745;
+            color: white;
+        }
+        #check-button:hover {
+            background-color: #218838;
+        }
+
+        #help-button {
+            background-color: transparent;
+            color: #007bff;
+            font-size: 1em;
+            border: 2px solid #007bff;
+            margin-top: 20px;
+            padding: 8px 15px;
+        }
+        #help-button:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Tilbakemelding */
+        #feedback {
+            margin-top: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            height: 30px; /* Unngår at layouten hopper */
+        }
+        .correct { color: #28a745; }
+        .incorrect { color: #dc3545; }
+
+        /* === STIL FOR POP-UP MODAL === */
+        .modal-overlay {
+            display: none; /* Skjult som standard */
+            position: fixed; /* Dekker hele skjermen */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Mørk bakgrunn */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        /* Den hvite boksen */
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+        .close-button:hover {
+            color: #333;
+        }
+
+        /* Stil for grammatikk-tabellen */
+        .grammar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .grammar-table th, .grammar-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .grammar-table th {
+            background-color: #f4f4f4;
+        }
+        .grammar-table code {
+            font-size: 1.1em;
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Tysk Verb-trener</h1>
+
+    <div class="quiz-container">
+        <h2>Svake Verb (Presens)</h2>
+
+        <div id="task-display">ich (machen)</div>
+        
+        <input type="text" id="answer-input" placeholder="Skriv svaret her..." autocomplete="off" autocorrect="off" autocapitalize="off">
+
+        <button id="check-button" class="button">Sjekk svar</button>
+
+        <div id="feedback"></div>
+    </div>
+
+    <button id="help-button" class="button">[?] Vis Hjelp</button>
+
+
+    <div id="modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Hjelp: Svake verb i presens</h2>
+            <p>Svake verb (også kalt regelmessige verb) følger et fast mønster i presens. Man tar verbstammen og legger til en fast ending for hver person.</p>
+            
+            <table class="grammar-table">
+                <tr>
+                    <th>Pronomen</th>
+                    <th>Ending</th>
+                    <th>Eksempel (machen)</th>
+                </tr>
+                <tr>
+                    <td>ich</td>
+                    <td><code>-e</code></td>
+                    <td>mach<b><code>-e</code></b></td>
+                </tr>
+                <tr>
+                    <td>du</td>
+                    <td><code>-st</code></td>
+                    <td>mach<b><code>-st</code></b></td>
+                </tr>
+                <tr>
+                    <td>er/sie/es</td>
+                    <td><code>-t</code></td>
+                    <td>mach<b><code>-t</code></b></td>
+                </tr>
+                <tr>
+                    <td>wir</td>
+                    <td><code>-en</code></td>
+                    <td>mach<b><code>-en</code></b></td>
+                </tr>
+                <tr>
+                    <td>ihr</td>
+                    <td><code>-t</code></td>
+                    <td>mach<b><code>-t</code></b></td>
+                </tr>
+                <tr>
+                    <td>sie/Sie</td>
+                    <td><code>-en</code></td>
+                    <td>mach<b><code>-en</code></b></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script>
+        // === 1. DATABASE ===
+        // Liste over pronomen. Indeksen (0-5) er VELDIG viktig.
+        const pronomen = ['ich', 'du', 'er/sie/es', 'wir', 'ihr', 'sie/Sie'];
+
+        // En mini-database med svake verb
+        // Hvert verb har en liste med 6 bøyningsformer i presens,
+        // som matcher indeksen til pronomen-listen.
+        const verbDatabase = [
+            {
+                infinitive: 'machen',
+                type: 'svak',
+                presens: ['mache', 'machst', 'macht', 'machen', 'macht', 'machen']
+            },
+            {
+                infinitive: 'lernen',
+                type: 'svak',
+                presens: ['lerne', 'lernst', 'lernt', 'lernen', 'lernt', 'lernen']
+            },
+            {
+                infinitive: 'wohnen',
+                type: 'svak',
+                presens: ['wohne', 'wohnst', 'wohnt', 'wohnen', 'wohnt', 'wohnen']
+            },
+            {
+                infinitive: 'spielen',
+                type: 'svak',
+                presens: ['spiele', 'spielst', 'spielt', 'spielen', 'spielt', 'spielen']
+            },
+            {
+                infinitive: 'sagen',
+                type: 'svak',
+                presens: ['sage', 'sagst', 'sagt', 'sagen', 'sagt', 'sagen']
+            }
+            // (Her kan du legge til flere svake verb)
+        ];
+
+        // === 2. HENT HTML-ELEMENTER ===
+        const taskDisplay = document.getElementById('task-display');
+        const answerInput = document.getElementById('answer-input');
+        const checkButton = document.getElementById('check-button');
+        const feedbackEl = document.getElementById('feedback');
+        const helpButton = document.getElementById('help-button');
+        const modal = document.getElementById('modal');
+        const closeButton = document.querySelector('.close-button');
+
+        // Global variabel for å lagre riktig svar
+        let currentTask = {};
+
+        // === 3. KOBLE TIL HENDELSER ===
+        checkButton.addEventListener('click', checkAnswer);
+        helpButton.addEventListener('click', showModal);
+        closeButton.addEventListener('click', hideModal);
+        
+        // Lukk modal hvis man klikker på bakgrunnen
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+
+        // Tillat "Enter" for å sjekke svar
+        answerInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // === 4. KJERNEFUNKSJONER ===
+        
+        /**
+         * Genererer en ny, tilfeldig oppgave.
+         */
+        function generateNewTask() {
+            // (Senere vil vi filtrere databasen her basert på nivå)
+            const currentDb = verbDatabase; // For nå, bruk hele databasen
+
+            // 1. Velg et tilfeldig verb
+            const verb = currentDb[Math.floor(Math.random() * currentDb.length)];
+            
+            // 2. Velg et tilfeldig pronomen (få en indeks 0-5)
+            const pronounIndex = Math.floor(Math.random() * pronomen.length);
+            const pronoun = pronomen[pronounIndex];
+            
+            // 3. Finn det riktige svaret
+            const correctAnswer = verb.presens[pronounIndex];
+
+            // 4. Lagre oppgaven globalt
+            currentTask = {
+                verb: verb.infinitive,
+                pronoun: pronoun,
+                answer: correctAnswer
+            };
+
+            // 5. Vis oppgaven til eleven
+            taskDisplay.textContent = `${pronoun} (${verb.infinitive})`;
+            
+            // 6. Tøm felt
+            answerInput.value = "";
+            answerInput.disabled = false;
+            checkButton.disabled = false;
+            feedbackEl.textContent = "";
+            feedbackEl.className = "";
+            answerInput.focus();
+        }
+
+        /**
+         * Sjekker svaret eleven har skrevet.
+         */
+        function checkAnswer() {
+            const userInput = answerInput.value.trim().toLowerCase();
+
+            if (!userInput) return; // Ikke gjør noe hvis feltet er tomt
+
+            if (userInput === currentTask.answer) {
+                // RIKTIG!
+                feedbackEl.textContent = "Riktig!";
+                feedbackEl.className = 'correct';
+                answerInput.disabled = true;
+                checkButton.disabled = true;
+                
+                // Gi en ny oppgave etter 1 sekund
+                setTimeout(generateNewTask, 1000);
+            } else {
+                // FEIL!
+                feedbackEl.textContent = `Feil. Riktig var: ${currentTask.answer}`;
+                feedbackEl.className = 'incorrect';
+                
+                // Rist på boksen (valgfritt, men stilig)
+                // (Krever en CSS-animasjon, men vi lar den være rød for nå)
+            }
+        }
+
+        /**
+         * Viser pop-up-vinduet.
+         */
+        function showModal() {
+            modal.style.display = 'flex';
+        }
+
+        /**
+         * Skjuler pop-up-vinduet.
+         */
+        function hideModal() {
+            modal.style.display = 'none';
+        }
+
+        // === 5. START APPEN ===
+        generateNewTask();
+
+    </script>
+</body>
+</html>
