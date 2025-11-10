@@ -10,7 +10,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* Starter på toppen */
+            justify-content: flex-start;
             min-height: 100vh;
             background-color: #f4f7f6;
             color: #333;
@@ -19,7 +19,44 @@
         }
         h1 { color: #005a9e; }
         
-        /* Filterknapper (Nivåvalg) */
+        /* === NY STIL: Poengteller === */
+        .score-container {
+            background-color: #fff;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            width: 90%;
+            max-width: 450px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap; /* For mindre skjermer */
+            gap: 10px;
+        }
+        .score-item {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        #score-correct { color: #28a745; font-weight: bold; }
+        #score-incorrect { color: #dc3545; font-weight: bold; }
+        #score-streak { color: #ff9800; font-weight: bold; } /* Oransje for streak */
+        
+        #reset-button {
+            background: #e0e0e0;
+            color: #333;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        #reset-button:hover {
+            background: #ccc;
+        }
+        /* === SLUTT PÅ NY STIL === */
+
         .filter-group {
             margin-bottom: 10px;
             display: flex;
@@ -28,103 +65,59 @@
             gap: 8px;
         }
         .filter-button {
-            background-color: #e0e0e0;
-            color: #333;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 20px; /* Pille-form */
-            cursor: pointer;
-            font-size: 0.9em;
-            font-weight: 500;
+            background-color: #e0e0e0; color: #333; border: none;
+            padding: 10px 15px; border-radius: 20px;
+            cursor: pointer; font-size: 0.9em; font-weight: 500;
             transition: all 0.2s;
         }
-        .filter-button:hover {
-            background-color: #ccc;
-        }
+        .filter-button:hover { background-color: #ccc; }
         .filter-button.active {
-            background-color: #007bff;
-            color: white;
-            font-weight: bold;
+            background-color: #007bff; color: white; font-weight: bold;
         }
 
-        /* Ekstra filter for perfektum */
         #perfektum-filter {
-            margin-top: 10px;
-            background-color: #f0f0f0;
-            padding: 10px;
-            border-radius: 8px;
+            margin-top: 10px; background-color: #f0f0f0;
+            padding: 10px; border-radius: 8px;
         }
 
         .quiz-container {
-            background-color: #fff;
-            padding: 30px 40px;
-            border-radius: 12px;
+            background-color: #fff; padding: 30px 40px; border-radius: 12px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 450px;
-            margin-top: 15px;
+            width: 90%; max-width: 450px;
         }
         
         #quiz-title {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: #555;
-            margin-top: 0;
+            font-size: 1.2em; font-weight: 600; color: #555; margin-top: 0;
         }
-
         #task-display {
-            font-size: 2.5em;
-            font-weight: 500;
-            color: #333;
-            margin: 10px 0;
-            line-height: 1.2; /* Bedre for lange subjekter */
+            font-size: 2.5em; font-weight: 500; color: #333;
+            margin: 10px 0; line-height: 1.2;
         }
-
         #answer-input {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.2em;
-            text-align: center;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box; 
-            margin-top: 10px;
+            width: 100%; padding: 15px; font-size: 1.2em; text-align: center;
+            border: 2px solid #ccc; border-radius: 8px;
+            box-sizing: border-box; margin-top: 10px;
         }
         #answer-input:focus { outline: none; border-color: #007bff; }
 
         .button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            font-size: 1.2em;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: background-color 0.2s;
+            display: block; width: 100%; padding: 15px; font-size: 1.2em;
+            font-weight: bold; border: none; border-radius: 8px;
+            cursor: pointer; margin-top: 15px; transition: background-color 0.2s;
         }
         #check-button { background-color: #28a745; color: white; }
         #check-button:hover { background-color: #218838; }
         
         #help-button {
-            background-color: transparent;
-            color: #007bff;
-            font-size: 1em;
-            border: 2px solid #007bff;
-            margin-top: 20px;
-            padding: 8px 15px;
-            border-radius: 8px;
-            cursor: pointer;
+            background-color: transparent; color: #007bff; font-size: 1em;
+            border: 2px solid #007bff; margin-top: 20px; padding: 8px 15px;
+            border-radius: 8px; cursor: pointer;
             transition: background-color 0.2s, color 0.2s;
         }
         #help-button:hover { background-color: #007bff; color: white; }
 
         #feedback {
-            margin-top: 15px;
-            font-size: 1.2em;
-            font-weight: bold;
-            height: 30px;
+            margin-top: 15px; font-size: 1.2em; font-weight: bold; height: 30px;
         }
         .correct { color: #28a745; }
         .incorrect { color: #dc3545; }
@@ -138,19 +131,17 @@
         }
         .modal-content {
             background-color: #fff; padding: 30px; border-radius: 10px;
-            width: 90%; max-width: 550px; /* Litt bredere */
+            width: 90%; max-width: 550px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            position: relative; max-height: 80vh; overflow-y: auto; /* Scrollbar for mye innhold */
+            position: relative; max-height: 80vh; overflow-y: auto;
         }
         .close-button {
             position: absolute; top: 10px; right: 15px;
             font-size: 2.5em; font-weight: bold; color: #aaa; cursor: pointer;
         }
         .close-button:hover { color: #333; }
-        
         #modal-title { margin-top: 0; }
         #modal-body p { text-align: left; line-height: 1.5; }
-        
         .grammar-table {
             width: 100%; border-collapse: collapse; margin-top: 15px;
         }
@@ -168,6 +159,18 @@
 
     <h1>Tysk Verb-trener</h1>
 
+    <div class="score-container">
+        <div class="score-item">
+            Riktig: <span id="score-correct">0</span>
+        </div>
+        <div class="score-item">
+            Feil: <span id="score-incorrect">0</span>
+        </div>
+        <div class="score-item">
+            På rad: <span id="score-streak">0</span> 🔥
+        </div>
+        <button id="reset-button">Nullstill</button>
+    </div>
     <div class="filter-group" id="type-filter">
         <button class="filter-button type-button active" data-type="svak">Svake</button>
         <button class="filter-button type-button" data-type="sterk">Sterke</button>
@@ -189,7 +192,6 @@
 
     <div class="quiz-container">
         <h2 id="quiz-title">Svake Verb (Presens)</h2>
-        
         <div id="task-display">ich (machen)</div>
         <input type="text" id="answer-input" placeholder="Skriv svaret her..." autocomplete="off" autocorrect="off" autocapitalize="off">
         <button id="check-button" class="button">Sjekk svar</button>
@@ -211,7 +213,6 @@
     <script>
         // === 1. DATABASE ===
         
-        // "Smarte" subjekter
         const subjects = [
             { display: 'ich', index: 0 }, { display: 'du', index: 1 },
             { display: 'er', index: 2 }, { display: 'sie (entall)', index: 2 }, { display: 'es', index: 2 },
@@ -223,8 +224,8 @@
             { display: 'Peter und Kari', index: 5 }, { display: 'Die Eltern', index: 5 }, { display: 'Die Kinder', index: 5 }
         ];
 
-        // Databasen er nå utvidet til å inkludere alle tider og typer
         const verbDatabase = [
+            // (Databasen er den samme som i forrige versjon)
             // SVAKE
             {
                 infinitive: 'machen', type: 'svak',
@@ -303,7 +304,6 @@
             }
         ];
         
-        // Hjelpe-objekt for 'werden' (brukes i Futurum)
         const werden = ['werde', 'wirst', 'wird', 'werden', 'werdet', 'werden'];
 
         // === 2. HENT HTML-ELEMENTER ===
@@ -323,6 +323,12 @@
         const tenseFilter = document.getElementById('tense-filter');
         const perfektumFilter = document.getElementById('perfektum-filter');
 
+        // === NYTT: Poengteller-elementer ===
+        const scoreCorrectEl = document.getElementById('score-correct');
+        const scoreIncorrectEl = document.getElementById('score-incorrect');
+        const scoreStreakEl = document.getElementById('score-streak');
+        const resetButton = document.getElementById('reset-button');
+        
         // === 3. GLOBALE VARIABLER (App-status) ===
         let currentTask = {};
         let quizState = 'checking'; 
@@ -330,35 +336,31 @@
         let currentTense = 'presens';
         let currentPerfektumMode = 'hjelpeverb';
 
+        // === NYTT: Poeng-variabler ===
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let currentStreak = 0;
+
         // === 4. KOBLE TIL HENDELSER ===
         
-        // Filter-knapper for Verbtype
+        // Filter-knapper
         typeFilter.addEventListener('click', (e) => {
             if (e.target.classList.contains('type-button')) {
                 currentType = e.target.dataset.type;
-                // Oppdater .active klassen
                 document.querySelectorAll('.type-button').forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
-                generateNewTask(); // Lag ny oppgave med nye filtre
+                generateNewTask(); 
             }
         });
-
-        // Filter-knapper for Tid
         tenseFilter.addEventListener('click', (e) => {
             if (e.target.classList.contains('tense-button')) {
                 currentTense = e.target.dataset.tense;
-                // Oppdater .active klassen
                 document.querySelectorAll('.tense-button').forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
-                
-                // Vis/skjul Perfektum sub-filter
-                perfektumFilter.style.display = (currentTense === 'perfektum') ? 'block' : 'none';
-                
+                perfektumFilter.style.display = (currentTense === 'perfektum') ? 'flex' : 'none'; // Endret til flex
                 generateNewTask();
             }
         });
-        
-        // Filter-knapper for Perfektum-modus
         perfektumFilter.addEventListener('click', (e) => {
             if (e.target.classList.contains('perfektum-button')) {
                 currentPerfektumMode = e.target.dataset.perfektum;
@@ -372,20 +374,17 @@
         checkButton.addEventListener('click', checkAnswer);
         helpButton.addEventListener('click', showModal);
         closeButton.addEventListener('click', hideModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) hideModal();
-        });
-        answerInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') checkAnswer();
-        });
+        modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
+        answerInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAnswer(); });
+        
+        // === NYTT: Reset-knapp ===
+        resetButton.addEventListener('click', resetScore);
 
         // === 5. KJERNEFUNKSJONER ===
         
         function generateNewTask() {
             // 1. Filtrer databasen
             const filteredDb = verbDatabase.filter(verb => verb.type === currentType);
-            
-            // Hvis filteret er tomt (f.eks. ingen modalverb), gi en feilmelding
             if (filteredDb.length === 0) {
                 taskDisplay.textContent = 'Ingen verb funnet';
                 answerInput.disabled = true;
@@ -409,26 +408,20 @@
                     correctAnswer = verb.presens[subjectIndex];
                     promptText = "Skriv inn verbet i presens";
                     break;
-                
                 case 'preteritum':
                     taskText = `${subjectObj.display} (${verb.infinitive})`;
                     correctAnswer = verb.preteritum[subjectIndex];
                     promptText = "Skriv inn verbet i preteritum";
                     break;
-                
                 case 'futurum':
                     taskText = `${subjectObj.display} (${verb.infinitive})`;
-                    // Svar er "bøyd 'werden' + infinitiv"
                     correctAnswer = `${werden[subjectIndex]} ${verb.infinitive}`;
                     promptText = "Skriv inn verbet i futurum";
                     break;
-
                 case 'perfektum':
                     if (currentPerfektumMode === 'hjelpeverb') {
                         taskText = `${subjectObj.display} (${verb.infinitive})`;
-                        // Svaret er *kun* hjelpeverbet
                         const korrektHjelpeverb = (verb.hjelpeverb === 'haben') ? 'haben' : 'sein';
-                        // Finn det korrekte bøyde hjelpeverbet
                         const hjelpeverbObj = verbDatabase.find(v => v.infinitive === korrektHjelpeverb);
                         correctAnswer = hjelpeverbObj.presens[subjectIndex];
                         promptText = "Skriv inn riktig hjelpeverb (haben/sein)";
@@ -441,9 +434,7 @@
             }
             
             // 4. Lagre og vis oppgaven
-            currentTask = {
-                answer: correctAnswer
-            };
+            currentTask = { answer: correctAnswer };
             taskDisplay.textContent = taskText;
             answerInput.placeholder = promptText + "...";
 
@@ -459,6 +450,9 @@
             feedbackEl.textContent = "";
             feedbackEl.className = "";
             answerInput.focus();
+            
+            // 7. === NYTT: Oppdater poengsum-visningen (i tilfelle reset) ===
+            updateScoreDisplay();
         }
 
         function checkAnswer() {
@@ -471,25 +465,55 @@
             if (!userInput) return; 
 
             if (userInput === currentTask.answer) {
+                // === NYTT: Oppdater poeng ===
+                correctCount++;
+                currentStreak++;
+                
                 feedbackEl.textContent = "Riktig!";
                 feedbackEl.className = 'correct';
                 answerInput.disabled = true;
                 checkButton.disabled = true;
-                setTimeout(generateNewTask, 1000);
+                
+                // Viser en "streak"-melding
+                if (currentStreak > 0 && currentStreak % 5 === 0) {
+                    feedbackEl.textContent = `Riktig! ${currentStreak} på rad! 🔥`;
+                }
+
+                setTimeout(generateNewTask, 1200);
             } else {
+                // === NYTT: Oppdater poeng ===
+                incorrectCount++;
+                currentStreak = 0; // Nullstill streak
+                
                 feedbackEl.textContent = `Feil. Riktig var: ${currentTask.answer}`;
                 feedbackEl.className = 'incorrect';
                 quizState = 'next';
                 checkButton.textContent = 'Neste';
             }
+            
+            // === NYTT: Oppdater poeng-visningen ===
+            updateScoreDisplay();
+        }
+        
+        // === NY FUNKSJON ===
+        function updateScoreDisplay() {
+            scoreCorrectEl.textContent = correctCount;
+            scoreIncorrectEl.textContent = incorrectCount;
+            scoreStreakEl.textContent = currentStreak;
+        }
+        
+        // === NY FUNKSJON ===
+        function resetScore() {
+            correctCount = 0;
+            incorrectCount = 0;
+            currentStreak = 0;
+            generateNewTask(); // Oppdaterer displayet og starter en ny runde
         }
 
-        // === "SMART" HJELPE-MODAL ===
+        // === "SMART" HJELPE-MODAL (Uendret) ===
         function showModal() {
-            // Generer hjelpetekst dynamisk
             let title = "";
             let body = "";
-            
             switch (currentTense) {
                 case 'presens':
                     title = `Hjelp: Presens (${capitalize(currentType)})`;
@@ -503,16 +527,14 @@
                         body = `<p>Spesielle verb (som haben, sein, werden) er helt uregelrette og må pugges.</p><p>Eksempel (sein): ich <b>bin</b>, du <b>bist</b>, er <b>ist</b>...</p>`;
                     }
                     break;
-                
                 case 'preteritum':
                     title = `Hjelp: Preteritum (${capitalize(currentType)})`;
                     if (currentType === 'svak') {
                         body = `<p>Svake verb lager preteritum ved å legge til <b>-te</b> til stammen, etterfulgt av personendingene.</p>${createTableHtml(['ich', 'du', 'er/sie/es', 'wir', 'ihr', 'sie/Sie'], ['-te', '-test', '-te', '-ten', '-tet', '-ten'])}`;
-                    } else { // sterk, modal, spesiell
+                    } else { 
                         body = `<p>Sterke, modale og spesielle verb har <b>uregelrett preteritum</b>. De får en helt ny stamvokal (f.eks. gehen -> <b>ging</b>) og må pugges.</p><p>Sterke verb har (som oftest) endingene: <b>-</b>, <b>-st</b>, <b>-</b>, <b>-en</b>, <b>-t</b>, <b>-en</b>.</p>`;
                     }
                     break;
-
                 case 'perfektum':
                     title = `Hjelp: Perfektum`;
                     if (currentPerfektumMode === 'hjelpeverb') {
@@ -527,7 +549,6 @@
                                 <p><b>Sterke verb:</b> Lager partisipp med <b>ge-</b> + (ofte endret) stamme + <b>-en</b> (f.eks. sehen -> <b>ge</b>seh<b>en</b>). Disse må pugges!</p>`;
                     }
                     break;
-                
                 case 'futurum':
                     title = `Hjelp: Futurum`;
                     body = `<p>Futurum (fremtid) er enkelt! Man bruker bøyd <b>werden</b> + <b>infinitiv</b> av hovedverbet.</p>
@@ -536,12 +557,10 @@
                             <p>Eksempel: "Du <b>wirst</b> (spille) <b>spielen</b>."</p>`;
                     break;
             }
-            
             modalTitle.innerHTML = title;
             modalBody.innerHTML = body;
             modal.style.display = 'flex';
         }
-
         function hideModal() {
             modal.style.display = 'none';
         }
@@ -551,7 +570,6 @@
         function capitalize(s) {
             return s.charAt(0).toUpperCase() + s.slice(1);
         }
-
         function createTableHtml(col1, col2) {
             let html = '<table class="grammar-table"><tr><th>Person</th><th>Form</th></tr>';
             for (let i = 0; i < col1.length; i++) {
@@ -562,7 +580,7 @@
         }
 
         // === 7. START APPEN ===
-        generateNewTask();
+        generateNewTask(); // Starter spillet
 
     </script>
 </body>
